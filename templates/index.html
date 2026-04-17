@@ -52,7 +52,6 @@
                 <th>Telefonnummer</th>
                 <th>E-Mail</th>
                 <th>Notizen</th>
-                <th>Erstellt am</th>
                 <th>Wartedauer</th>
                 <th>Aktionen</th>
             </tr>
@@ -64,12 +63,11 @@
                 <td>{{ contact.phone }}</td>
                 <td>{{ contact.email }}</td>
                 <td>{{ contact.notes }}</td>
-                <td>{{ contact.created_at|format_date }}</td>
                 <td>{{ contact.waiting_days }} Tage</td>
-                <td>
-                    <a href="{{ url_for('edit_contact', contact_id=contact.id) }}">Bearbeiten</a>
+                <td class="actions">
+                    <a href="{{ url_for('edit_contact', contact_id=contact.id) }}" title="Bearbeiten" class="btn-edit"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11.5 1.5l3 3L5 14H2v-3z"/></svg></a>
                     <form method="post" action="{{ url_for('delete_contact', contact_id=contact.id) }}" style="display:inline;">
-                        <button type="submit" onclick="return confirm('Kontakt wirklich löschen?')">Löschen</button>
+                        <button type="submit" onclick="return confirm('Kontakt wirklich löschen?')" title="Löschen" class="btn-delete"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4h12M5 4V2h6v2M6 7v5M10 7v5M3 4l1 10h8l1-10"/></svg></button>
                     </form>
                 </td>
             </tr>

@@ -249,26 +249,56 @@ tbody tr:hover {
     gap: 0.4rem;
 }
 
-/* === Delete button in table === */
-tbody button {
-    background: #e74c3c;
-    font-size: 0.82rem;
-    padding: 0.3rem 0.7rem;
+/* === Action buttons in table === */
+.btn-edit {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 4px;
+    color: #555;
+    transition: background 0.15s, color 0.15s;
 }
 
-tbody button:hover {
-    background: #c0392b;
+.btn-edit:hover {
+    background: #eef2f7;
+    color: #2c3e50;
+}
+
+.btn-delete {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 4px;
+    background: #fde8e8;
+    color: #c0392b;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    transition: background 0.15s;
+}
+
+.btn-delete:hover {
+    background: #f5c6cb;
 }
 
 tbody a {
-    color: #3498db;
     text-decoration: none;
-    font-size: 0.85rem;
-    margin-right: 0.5rem;
+    margin-right: 0.25rem;
 }
 
-tbody a:hover {
-    text-decoration: underline;
+tbody button {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+}
+
+.actions {
+    white-space: nowrap;
 }
 
 /* === Responsive: Tablet (<=768px) === */
