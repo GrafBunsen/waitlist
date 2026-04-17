@@ -19,7 +19,7 @@ except Exception:
 def _get_app_dir() -> str:
     """Gibt das Anwendungsverzeichnis zurück (PyInstaller-kompatibel)."""
     if getattr(sys, "frozen", False):
-        return os.path.dirname(sys.executable)
+        return sys._MEIPASS
     return os.path.dirname(os.path.abspath(__file__))
 
 
@@ -37,7 +37,13 @@ def _create_fallback_icon(size: int = 64) -> Image.Image:
 
 def load_icon() -> Image.Image:
     """Lädt icon.ico aus dem App-Verzeichnis oder erzeugt ein Fallback-Icon."""
-    icon_path = os.path.join(_get_app_dir(), "icon.ico")
+    # Frozen: _MEIPASS (dort liegt icon.ico als bundled data)
+    # Dev: Projektroot (eine Ebene über src/)
+    if getattr(sys, "frozen", False):
+        base = sys._MEIPASS
+    else:
+        base = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    icon_path = os.path.join(base, "icon.ico")
     try:
         return Image.open(icon_path)
     except Exception:

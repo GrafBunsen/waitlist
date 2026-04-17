@@ -5,6 +5,7 @@ und zeigt ein System-Tray-Icon im Hauptthread an.
 """
 
 import os
+import socket
 import sys
 import threading
 import webbrowser
@@ -32,8 +33,23 @@ def quit_app() -> None:
     os._exit(0)
 
 
+def _is_already_running() -> bool:
+    """Prüft ob der Port bereits belegt ist (andere Instanz läuft)."""
+    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    try:
+        sock.connect((HOST, PORT))
+        sock.close()
+        return True
+    except OSError:
+        return False
+
+
 def main() -> None:
     """Hauptfunktion: Server starten, Browser öffnen, Tray-Icon anzeigen."""
+    if _is_already_running():
+        open_browser()
+        return
+
     server_thread = threading.Thread(target=start_server, daemon=True)
     server_thread.start()
 

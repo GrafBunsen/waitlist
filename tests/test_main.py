@@ -61,57 +61,57 @@ class TestQuitApp:
 class TestMain:
     """Tests für die main-Funktion."""
 
+    @patch("main._is_already_running", return_value=False)
     @patch("main.run_tray")
     @patch("main.open_browser")
     @patch("main.threading.Thread")
-    def test_starts_server_in_daemon_thread(self, mock_thread_cls, mock_browser, mock_tray):
-        """Server wird in einem Daemon-Thread gestartet."""
+    def test_starts_server_in_daemon_thread(self, mock_thread_cls, mock_browser, mock_tray, _):
         mock_thread = MagicMock()
         mock_thread_cls.return_value = mock_thread
-
         main.main()
-
         mock_thread_cls.assert_called_once_with(target=main.start_server, daemon=True)
         mock_thread.start.assert_called_once()
 
+    @patch("main._is_already_running", return_value=False)
     @patch("main.run_tray")
     @patch("main.open_browser")
     @patch("main.threading.Thread")
-    def test_opens_browser(self, mock_thread_cls, mock_browser, mock_tray):
-        """Browser wird nach Server-Start geöffnet."""
+    def test_opens_browser(self, mock_thread_cls, mock_browser, mock_tray, _):
         mock_thread_cls.return_value = MagicMock()
-
         main.main()
-
         mock_browser.assert_called_once()
 
+    @patch("main._is_already_running", return_value=False)
     @patch("main.run_tray")
     @patch("main.open_browser")
     @patch("main.threading.Thread")
-    def test_starts_tray_with_callbacks(self, mock_thread_cls, mock_browser, mock_tray):
-        """Tray-Icon wird mit korrekten Callbacks gestartet."""
+    def test_starts_tray_with_callbacks(self, mock_thread_cls, mock_browser, mock_tray, _):
         mock_thread_cls.return_value = MagicMock()
-
         main.main()
-
         mock_tray.assert_called_once_with(
             open_browser_callback=main.open_browser,
             quit_callback=main.quit_app,
         )
 
+    @patch("main._is_already_running", return_value=False)
     @patch("main.run_tray")
     @patch("main.open_browser")
     @patch("main.threading.Thread")
-    def test_execution_order(self, mock_thread_cls, mock_browser, mock_tray):
-        """Reihenfolge: Thread starten → Browser öffnen → Tray starten."""
+    def test_execution_order(self, mock_thread_cls, mock_browser, mock_tray, _):
         mock_thread = MagicMock()
         mock_thread_cls.return_value = mock_thread
-
         call_order = []
         mock_thread.start.side_effect = lambda: call_order.append("server_start")
         mock_browser.side_effect = lambda: call_order.append("browser_open")
         mock_tray.side_effect = lambda **kw: call_order.append("tray_run")
-
         main.main()
-
         assert call_order == ["server_start", "browser_open", "tray_run"]
+
+    @patch("main._is_already_running", return_value=True)
+    @patch("main.open_browser")
+    @patch("main.run_tray")
+    def test_reuses_existing_instance(self, mock_tray, mock_browser, _):
+        """Bei laufender Instanz nur Browser öffnen, kein Server/Tray."""
+        main.main()
+        mock_browser.assert_called_once()
+        mock_tray.assert_not_called()
