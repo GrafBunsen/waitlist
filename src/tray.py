@@ -8,8 +8,12 @@ import os
 import sys
 from typing import Callable, Optional
 
-import pystray
 from PIL import Image, ImageDraw
+
+try:
+    import pystray
+except Exception:
+    pystray = None  # type: ignore[assignment]
 
 
 def _get_app_dir() -> str:

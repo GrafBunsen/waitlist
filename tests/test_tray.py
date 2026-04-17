@@ -6,7 +6,6 @@ Testet die plattformunabhängige Tray-Logik ohne tatsächliches Display.
 import os
 from unittest.mock import MagicMock, patch
 
-import pystray
 from PIL import Image
 
 from src import tray
