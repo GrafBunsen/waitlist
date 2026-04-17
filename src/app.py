@@ -22,8 +22,13 @@ from src import db
 from src import validators
 
 import os
+import sys
 
-_base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if getattr(sys, "frozen", False):
+    _base_dir = sys._MEIPASS
+else:
+    _base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
 app = Flask(
     __name__,
     template_folder=os.path.join(_base_dir, "templates"),
