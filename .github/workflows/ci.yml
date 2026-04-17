@@ -24,7 +24,7 @@ jobs:
         with:
           python-version: "3.11"
       - run: pip install pyinstaller flask pystray pillow
-      - run: pyinstaller build.spec
+      - run: pyinstaller --clean build.spec
       - uses: actions/upload-artifact@v4
         with:
           name: Warteliste

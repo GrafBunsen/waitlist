@@ -14,8 +14,8 @@ import sys
 
 block_cipher = None
 
-# Projektverzeichnis (dort, wo diese .spec-Datei liegt)
-PROJECT_DIR = os.path.abspath(os.path.dirname(SPECPATH))
+# Projektverzeichnis – SPECPATH zeigt auf das Verzeichnis der .spec-Datei
+PROJECT_DIR = os.path.abspath(SPECPATH if os.path.isdir(SPECPATH) else os.path.dirname(SPECPATH))
 
 a = Analysis(
     [os.path.join(PROJECT_DIR, 'main.py')],
