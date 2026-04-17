@@ -6,14 +6,22 @@ Platzhalter (?), um SQL-Injection zu verhindern.
 
 import os
 import sqlite3
+import sys
 from datetime import datetime
 
 DB_NAME = "contacts.db"
 
 
 def _db_path() -> str:
-    """Gibt den Pfad zur Datenbankdatei im Anwendungsverzeichnis zurück."""
-    base = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    """Gibt den Pfad zur Datenbankdatei zurück.
+
+    Bei PyInstaller-Builds: neben der .exe-Datei.
+    Bei Entwicklung: im Projektroot.
+    """
+    if getattr(sys, "frozen", False):
+        base = os.path.dirname(sys.executable)
+    else:
+        base = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     return os.path.join(base, DB_NAME)
 
 
