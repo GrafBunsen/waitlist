@@ -6,9 +6,15 @@ Testet die plattformunabhängige Tray-Logik ohne tatsächliches Display.
 import os
 from unittest.mock import MagicMock, patch
 
+import pytest
 from PIL import Image
 
 from src import tray
+
+pytestmark = pytest.mark.skipif(
+    tray.pystray is None,
+    reason="pystray nicht verfügbar (headless Umgebung)",
+)
 
 
 class TestLoadIcon:
