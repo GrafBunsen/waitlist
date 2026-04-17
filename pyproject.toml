@@ -1,0 +1,19 @@
+[project]
+name = "waitlist-contact-manager"
+version = "0.1.0"
+description = "Wartelisten-Kontaktverwaltung – lokale Flask-App mit SQLite"
+requires-python = ">=3.11"
+dependencies = [
+    "flask",
+    "pystray",
+    "pillow",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "hypothesis",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
